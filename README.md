@@ -1,1 +1,1 @@
-# CHL5250_SSC_Project
+# CHL5250 SSC Group Project
