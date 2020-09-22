@@ -9,4 +9,6 @@ This repository contains relevant work regarding the course project required by 
 - Do the results change when missing values (i.e., invalid responses) for the ‘household income’ are imputed? Which assumptions do you have to make to perform such an analysis?
 - With the information provided in the PUMF, what would be your interpretation of the analysis results? What are the limitations of this study? What additional information would be helpful in reaching a more meaningful conclusion? 
 
+### Thoughts on Methodology
+
 
