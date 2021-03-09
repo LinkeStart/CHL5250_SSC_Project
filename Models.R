@@ -539,28 +539,94 @@ mod.bmi <- glm(heart_disease ~ BMI,
 summary(mod.bmi)
 
 ## PAI
-PAI <- relevel(PAI, ref="3")
+# Physical Activity Index # 1 = ACTIVE, 2 = MODERATE, 3 = INACTIVE, otherwise NA
+getDescriptionStatsBy(x = PAI, by = arthritis)
+PAI <- relevel(PAI, ref = 3)
+summary(PAI)
+fit.PAI <- glm( formula = heart_disease ~  PAI, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.PAI)
+round(exp(coef(fit.PAI)), 4)
 
 ## Access to regular doctor
-doctor <- relevel(doctor, ref="Yes")
+#Has a medical doctor # 1 = Yes, 2 = No, otherwise NA
+getDescriptionStatsBy(x = doctor, by = arthritis)
+doctor <- relevel(doctor,ref="Yes")
+summary(doctor)
+fit.doctor <- glm( formula = heart_disease ~  doctor, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.doctor)
+round(exp(coef(fit.doctor)), 4)
 
 ## Smoker
-smoker <- relevel(smoker, ref="6")
+#smoker: 1 = daily, 2= occasionally, 3 = not a smoker, 4 = Former daily
+# 5 = former occasionally, 6 = never smoked, otherwise NA
+getDescriptionStatsBy(x = smoker, by = arthritis)
+smoker <- relevel(smoker, ref=6)
+summary(smoker)
+fit.smoker <- glm( formula = heart_disease ~  smoker, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.smoker)
+round(exp(coef(fit.smoker)), 4)
+
+## drinker
+# 1 = regular, 2 = occasionally, 3 = former, 4 = never, otherwise NA
+getDescriptionStatsBy(x = drinker, by = arthritis)
+drinker <- relevel(drinker, ref=1)
+summary(drinker)
+fit.drinker <- glm( formula = heart_disease ~  drinker, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.drinker)
+round(exp(coef(fit.PAI)), 4)
 
 ## BP
-bp <- relevel(bp, ref="No")
+#Has high blood pressure 1 = Yes, 2 = No, otherwise NA
+getDescriptionStatsBy(x = bp, by = arthritis)
+bp <- relevel(drinker, ref=1)
+summary(bp)
+fit.bp <- glm( formula = heart_disease ~  bp, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.bp)
+round(exp(coef(fit.bp)), 4)
 
 ## Diabetes
-diabetes <- relevel(diabetes, ref="No")
+# 1 = Yes, 2 = No, otherwise NA
+getDescriptionStatsBy(x = diabetes, by = arthritis)
+diabetes <- relevel(diabetes, ref=1)
+summary(diabetes)
+fit.diabetes <- glm( formula = heart_disease ~  diabetes, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.diabetes)
+round(exp(coef(fit.diabetes)), 4)
 
 ## COPD
-COPD <- relevel(COPD, ref="No")
+#1 = yes, 2 = no, otherwise NA
+getDescriptionStatsBy(x = COPD, by = arthritis)
+COPD <- relevel(COPD, ref=1)
+summary(COPD)
+fit.COPD<- glm( formula = heart_disease ~  COPD, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.COPD)
+round(exp(coef(fit.COPD)), 4)
 
 ## Daily consumption
+getDescriptionStatsBy(x = daily_consumption, by = arthritis)
 daily_consumption <- relevel(daily_consumption, ref="3-6")
+summary(daily_consumption)
+fit.daily_consumption<- glm( formula = heart_disease ~  daily_consumption, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.daily_consumption)
+round(exp(coef(fit.daily_consumption)), 4)
 
 ## Stress
-stress <- relevel(stress, ref="3")
+# 1 = NOT AT ALL, 2= NOT VERY, 3 = A BIT, 4 = QUITE A BIT, 5 = EXTREMELY, OW = NA
+getDescriptionStatsBy(x = stress, by = arthritis)
+stress <- relevel(stress, ref=3)
+summary(stress)
+fit.stress<- glm( formula = heart_disease ~  stress, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(fit.stress)
+round(exp(coef(fit.stress)), 4)
+
+#Recode Northwest Territories,Nunavut, Yukon as 'north' and the rest of the provinces/territories as 'south'.
+getDescriptionStatsBy(x = province, by = arthritis)
+province <- relevel(province, ref=1)
+summary(province)
+fit.province<- glm( formula = heart_disease ~ province, family="binomial", weights = weight/mean(weight),na.action=na.omit)
+summary(province)
+round(exp(coef(fit.PAI)), 4)
+
 
 # Backward elimination:
 
