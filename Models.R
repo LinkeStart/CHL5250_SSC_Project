@@ -659,3 +659,55 @@ summary(full.mod)
 step.model <- step(full.mod, direction = "backward", trace = TRUE)
 summary(step.model)
 
+#============================= correlation analysis================================
+
+# all the variables except weight are categorical
+# pariwise assocation can be measured by building pairwise contingency tables 
+# and association can be assessed by Pearson's chi-square test statistics
+
+summary(dat)
+
+dat.char <- subset(dat, select=-c(weight))
+
+Var1 <- c(); Var2 <- c(); pearson.sta <- c(); pvalue <- c(); cont.table <- list()
+for (i in 1:ncol(dat.char)){
+  for (j in 1:ncol(dat.char)){
+    Var1 <- c(Var1, as.character(colnames(dat.char)[i]))
+    Var2 <- c(Var2, as.character(colnames(dat.char)[j]))
+    cont.table[[length(cont.table)+1]] <- table(dat.char[,i], dat.char[,j])
+    pearson.sta <- c(pearson.sta,chisq.test(dat.char[,i], dat.char[,j])$statistic)
+    pvalue <- c(pvalue,chisq.test(dat.char[,i], dat.char[,j])$p.value)
+  }
+}
+
+cor.df <- data.frame(Var1 = Var1, Var2 = Var2, pvalue = pvalue)
+
+
+# assocation between multi-level categorical and numerical can be assesses by ANOVA
+# Use F-test
+
+Var1 <- c(); Var2 <- c(); p.value <- c()
+for (k in 1:ncol(dat.char)){
+  Var1 <- c(Var1, "weight", as.character(colnames(dat.char)[k]))
+  Var2 <- c(Var2, as.character(colnames(dat.char)[k]), "weight")
+  anova <- aov(dat$weight ~ dat[,k])
+  p.value <- c(p.value,summary(anova)[[1]][["Pr(>F)"]][[1]],summary(anova)[[1]][["Pr(>F)"]][[1]])
+}
+
+cor.df <- rbind(cor.df, data.frame(Var1 = c(Var1, "weight", "weight"),
+                                   Var2 = c(Var2, "weight", "weight"), 
+                                   pvalue = c(p.value, 0, 0)))
+cor.df$strength <- ifelse(cor.df$pvalue < 0.0001, "very strong", 
+                            ifelse(cor.df$pvalue < 0.01,"strong",ifelse(cor.df$pvalue < 0.05, "moderate", "weak")))
+
+
+# all pairwise assocations
+cor.df
+
+# generate final plot
+ggplot(data = cor.df, aes(x=Var1, y=Var2, fill=strength)) +
+  geom_tile()+scale_fill_manual(breaks = c("very strong", "strong", "moderate", "weak"), 
+                                values=c("skyblue4", "skyblue3", "skyblue", "lightsteelblue1")) +
+  ggtitle("Pairwise Associations Heatmap") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
