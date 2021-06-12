@@ -295,8 +295,7 @@ cohort_non <- na.omit(cohort)
 # Multivariable logistic regression model with sex:
 full.mod <- glm(heart_disease ~ arthritis + age + sex + racial_origin + education 
                 + income + BMI + smoker + drinker + bp + diabetes + doctor + PAI,
-                data = cohort_non, weights = weight/mean(weight), family = "binomial",
-                na.action = na.omit)
+                data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(full.mod)
 
 full.mod.step <- step(full.mod, direction = "backward")
@@ -309,8 +308,7 @@ AIC_0 <- rbind(AIC_0, c("Sex", full.mod$aic))
 full.mod1 <- glm(heart_disease ~ arthritis + age + sex + racial_origin + education 
                 + income + BMI + smoker + drinker + bp + diabetes + doctor + PAI 
                 + length_of_time,
-                data = cohort_non, weights = weight/mean(weight), family = "binomial",
-                na.action = na.omit)
+                data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(full.mod1)
 full.mod.step1 <- step(full.mod1, direction = "backward")
 summary(full.mod.step1)
@@ -321,8 +319,7 @@ AIC_0 <- rbind(AIC_0, c("Immigration", full.mod1$aic))
 full.mod2 <- glm(heart_disease ~ arthritis + age + sex + racial_origin + education 
                  + income + BMI + smoker + drinker + bp + diabetes + doctor + PAI 
                  + marital_status,
-                 data = cohort_non, weights = weight/mean(weight), family = "binomial",
-                 na.action = na.omit)
+                 data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(full.mod2)
 full.mod.step2 <- step(full.mod2, direction = "backward")
 summary(full.mod.step2)
@@ -334,8 +331,7 @@ AIC_0 <- rbind(AIC_0, c("Marital Status", full.mod2$aic))
 full.mod3 <- glm(heart_disease ~ arthritis + age + sex + racial_origin + education 
                  + income + BMI + smoker + drinker + bp + diabetes + doctor + PAI 
                  + marital_status + length_of_time,
-                 data = cohort_non, weights = weight/mean(weight), family = "binomial",
-                 na.action = na.omit)
+                 data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(full.mod3)
 
 AIC_0 <- rbind(AIC_0, c("Full", full.mod3$aic))
@@ -347,8 +343,7 @@ summary(full.mod.step3)
 # Multivariable logistic regression with sex removed: 
 full.mod4 <- glm(heart_disease ~ arthritis + age + racial_origin + education 
                  + income + BMI + smoker + drinker + bp + diabetes + doctor + PAI,
-                 data = cohort_non, weights = weight/mean(weight), family = "binomial",
-                 na.action = na.omit)
+                 data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(full.mod4)
 
 AIC_0 <- rbind(AIC_0, c("Base", full.mod4$aic))
@@ -374,8 +369,7 @@ out <- c()
 mod1 <- glm(heart_disease ~ arthritis + age + sex + 
               racial_origin + education + income + smoker + drinker + bp + 
               diabetes + doctor + length_of_time + arthritis*age,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod1)
 type3_1 <- Anova(mod1, type="III")
 out <- rbind(out, c("Age", mod1$aic, type3_1$`Pr(>Chisq)`[13]))
@@ -385,8 +379,7 @@ out <- rbind(out, c("Age", mod1$aic, type3_1$`Pr(>Chisq)`[13]))
 mod2 <- glm(heart_disease ~ arthritis + age + sex + 
               racial_origin + education + income + smoker + drinker + bp + 
               diabetes + doctor + length_of_time + arthritis*sex,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod2)
 type3_2 <- Anova(mod2, type="III")
 out <- rbind(out, c("Sex", mod2$aic, type3_2$`Pr(>Chisq)`[13]))
@@ -395,8 +388,7 @@ out <- rbind(out, c("Sex", mod2$aic, type3_2$`Pr(>Chisq)`[13]))
 mod3 <- glm(heart_disease ~ arthritis + age + sex + 
               racial_origin + education + income + smoker + drinker + bp + 
               diabetes + doctor + length_of_time + arthritis*racial_origin,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod3)
 type3_3 <- Anova(mod3, type="III")
 out <- rbind(out, c("Ethnicity", mod3$aic, type3_3$`Pr(>Chisq)`[13]))
@@ -405,7 +397,7 @@ out <- rbind(out, c("Ethnicity", mod3$aic, type3_3$`Pr(>Chisq)`[13]))
 mod4 <- glm(heart_disease ~ arthritis + age + sex + 
               racial_origin + education + income + smoker + drinker + bp + 
               diabetes + doctor + length_of_time + arthritis*education,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
+            data = cohort_non, weights = weight/mean(weight), family = "binomial",
             na.action = na.omit)
 summary(mod4)
 AIC <- rbind(AIC, c("Education", mod4$aic))
@@ -416,8 +408,7 @@ out <- rbind(out, c("Education", mod4$aic, type3_4$`Pr(>Chisq)`[13]))
 mod5 <- glm(heart_disease ~ arthritis + age + sex + 
               racial_origin + education + income + smoker + drinker + bp + 
               diabetes + doctor + length_of_time + arthritis*income,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod5)
 AIC <- rbind(AIC, c("Income", mod5$aic))
 type3_5 <- Anova(mod5, type="III")
@@ -427,8 +418,7 @@ out <- rbind(out, c("Income", mod5$aic, type3_5$`Pr(>Chisq)`[13]))
 mod6 <- glm(heart_disease ~ arthritis + age + sex + 
               racial_origin + education + income + smoker + drinker + bp + 
               diabetes + doctor + length_of_time + arthritis*smoker,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod6)
 AIC <- rbind(AIC, c("Smoking", mod6$aic))
 type3_6 <- Anova(mod6, type="III")
@@ -438,8 +428,7 @@ out <- rbind(out, c("Smoking", mod6$aic, type3_6$`Pr(>Chisq)`[13]))
 mod7 <- glm(heart_disease ~ arthritis + age + sex + 
               racial_origin + education + income + smoker + drinker + bp + 
               diabetes + doctor + length_of_time + arthritis*drinker,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod7)
 AIC <- rbind(AIC, c("Drinking", mod7$aic))
 type3_7 <- Anova(mod7, type="III")
@@ -449,8 +438,7 @@ out <- rbind(out, c("Drinking", mod7$aic, type3_7$`Pr(>Chisq)`[13]))
 mod8 <- glm(heart_disease ~ arthritis + age + sex + 
               racial_origin + education + income + smoker + drinker + bp + 
               diabetes + doctor + length_of_time + arthritis*bp,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod8)
 AIC <- rbind(AIC, c("High BP", mod8$aic))
 type3_8 <- Anova(mod8, type="III")
@@ -460,8 +448,7 @@ out <- rbind(out, c("High BP", mod8$aic, type3_8$`Pr(>Chisq)`[13]))
 mod9 <- glm(heart_disease ~ arthritis + age + sex + 
                racial_origin + education + income + smoker + drinker + bp + 
                diabetes + doctor + length_of_time + arthritis*diabetes,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod9)
 AIC <- rbind(AIC, c("Diabetes", mod9$aic))
 type3_9 <- Anova(mod9, type="III")
@@ -471,8 +458,7 @@ out <- rbind(out, c("Diabetes", mod9$aic, type3_9$`Pr(>Chisq)`[13]))
 mod10 <- glm(heart_disease ~ arthritis + age + sex + 
                racial_origin + education + income + smoker + drinker + bp + 
                diabetes + doctor + length_of_time + arthritis*doctor,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod10)
 AIC <- rbind(AIC, c("Medical access", mod10$aic))
 type3_10 <- Anova(mod10, type="III")
@@ -482,8 +468,7 @@ out <- rbind(out, c("Medical access", mod10$aic, type3_10$`Pr(>Chisq)`[13]))
 mod11 <- glm(heart_disease ~ arthritis + age + sex + 
                racial_origin + education + income + smoker + drinker + bp + 
                diabetes + doctor + length_of_time + arthritis*length_of_time,
-            data = cohort, weights = weight/mean(weight), family = "binomial",
-            na.action = na.omit)
+            data = cohort_non, weights = weight/mean(weight), family = "binomial")
 summary(mod11)
 AIC <- rbind(AIC, c("Immigration status", mod11$aic))
 type3_11 <- Anova(mod11, type="III")
